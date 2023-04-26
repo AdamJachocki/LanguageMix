@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CsClient": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
