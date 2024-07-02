@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)src\CsClient\bin\$(Platform)\$(Configuration)\net7.0</OutDir>
+    <OutDir>$(SolutionDir)src\CsClient\bin\$(Platform)\$(Configuration)\net8.0</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,6 +115,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,9 +145,11 @@
   <ItemGroup>
     <ClInclude Include="CompanyData.h" />
     <ClInclude Include="CompanyRepository.h" />
+    <ClInclude Include="FileInfo.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="library.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Point3d.h" />
     <ClInclude Include="UserData.h" />
     <ClInclude Include="UserRepository.h" />
   </ItemGroup>

@@ -1,14 +1,19 @@
-﻿namespace CsClient
+﻿using System.Runtime.InteropServices;
+
+namespace CsClient
 {
     internal class Program
     {
         static void Main(string[] args)
-        {            
+        {          
+            var ch = "𠝹";
+
+
             var client = new LibraryClient();
             int result = client.Add(2, 5);
             Console.WriteLine("Add: " + result);
 
-            var strLen = client.GetStrLen("Hello!");
+            var strLen = client.GetStrLen("𠝹");
             Console.WriteLine("StrLen: " + strLen);
 
             strLen = client.GetStrLenA("Hello!");
@@ -34,6 +39,14 @@
 
             info = client.GetInfoWithArray();
             Console.WriteLine("Info with buffer: " + info);
+
+            var point = client.GetPoint();
+            Console.WriteLine($"Point1: {point}");
+
+            client.UpdatePoint(ref point);
+            Console.WriteLine($"Point after update: {point}");
+
+            CppFileInfo fileInfo = client.GetAssemblyFileInfo();
         }
     }
 }

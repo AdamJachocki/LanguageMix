@@ -1,52 +1,11 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "library.h"
-#include "UserRepository.h"
+//#include "UserRepository.h"
 #include <combaseapi.h>
 #include <strsafe.h>
+#include <string>
+#include <filesystem>
 
-class LibImpl
-{
-public:
-	LibImpl()
-	{
-		m_pUserRepo.reset(new UserRepository());
-	}
-
-	~LibImpl()
-	{
-		m_pUserRepo.reset(nullptr);
-	}
-
-	bool addUser(const UserInfo& data)
-	{
-		UserData ud(data.m_id, data.p_name);
-		m_pUserRepo->addUser(ud);
-		return true;
-	}
-
-	//const UserInfo & getUser(int id)
-	//{
-	//	try
-	//	{
-	//		const UserData& data = m_userRepo.getUserById(id);
-	//		UserInfo result;
-	//		result.m_id = data.getId();
-	//		//result.p_name = data.getName().c_str();
-	//	}
-	//}
-
-	bool addCompany(const CompanyInfo& data)
-	{
-		//m_companies[data.m_id] = data;
-		return true;
-	}
-
-private:
-	std::unique_ptr<UserRepository> m_pUserRepo;
-};
-
-
-static LibImpl m_impl;
 
 DLL_EXPORT int add(int a, int b)
 {	
@@ -67,7 +26,7 @@ DLL_EXPORT size_t __stdcall getStrLenA(const char* pStr)
 
 DLL_EXPORT wchar_t* getInfo()
 {
-	return _wcsdup(L"Jestem wywo≥any z C++!");	
+	return _wcsdup(L"†ùπ");  //(L"Jestem wywo≈Çany z C++!");	
 }
 
 DLL_EXPORT void freeInfo(wchar_t* pData)
@@ -77,7 +36,7 @@ DLL_EXPORT void freeInfo(wchar_t* pData)
 
 DLL_EXPORT wchar_t* __stdcall getInfoWithCom()
 {
-	std::wstring str = L"CzeúÊ, jestem z COM";
+	std::wstring str = L"†ùπ"; //L"Cze≈õƒá, jestem z COM";
 	size_t allocSize = str.size() * 2 + 2;
 	STRSAFE_LPWSTR result = (STRSAFE_LPWSTR)CoTaskMemAlloc(allocSize);
 	StringCchCopy(result, allocSize, str.c_str());
@@ -87,20 +46,20 @@ DLL_EXPORT wchar_t* __stdcall getInfoWithCom()
 
 DLL_EXPORT BSTR __stdcall getInfoWithBstr()
 {
-	return SysAllocString(L"A tak dzia≥a BSTR");
+	return SysAllocString(L"A tak dzia≈Ça BSTR");
 }
 
 DLL_EXPORT void getInfo2(wchar_t* pData, int strLen)
 {
 	ZeroMemory(pData, strLen * 2);
-	std::wstring result = L"Moøna i tak...";
+	std::wstring result = L"Mo≈ºna i tak...";
 	result = result.substr(0, strLen);
 	std::copy(result.begin(), result.end(), pData);
 }
 
 DLL_EXPORT int __stdcall getInfo3(wchar_t* pData, int strLen)
 {
-	std::wstring str = L"A to jest string o nieznanej d≥ugoúci";
+	std::wstring str = L"A to jest string o nieznanej d≈Çugo≈õci";
 
 	if (pData == nullptr)
 		return str.size();
@@ -113,25 +72,31 @@ DLL_EXPORT int __stdcall getInfo3(wchar_t* pData, int strLen)
 
 DLL_EXPORT void __stdcall getInfo4(BSTR& data)
 {
-	data = SysAllocString(L"DzieÒ dobry, jak siÍ masz?");
+	data = SysAllocString(L"Dzie≈Ñ dobry, jak siƒô masz?");
 }
 
-DLL_EXPORT bool addUser(const UserInfo& data)
+DLL_EXPORT Point3d __stdcall getPoint3d()
 {
-	return m_impl.addUser(data);
+	return { 1.5f, 2.25f, 3.3f };
 }
 
-DLL_EXPORT bool addCompany(const CompanyInfo& data)
+DLL_EXPORT void __stdcall updatePoint3d(Point3d& point)
 {
-	return m_impl.addCompany(data);
+	point.x += 1.0f;
+	point.y += 1.0f;
+	point.z += 1.0f;
 }
 
-//DLL_EXPORT const UserInfo& getUser(int id)
-//{
-//	return m_impl.getUser(id);
-//}
-
-DLL_EXPORT void getUsers(UserInfo* pUsers)
+DLL_EXPORT FileInfo __stdcall getFileInfo(const wchar_t* pFilePath)
 {
-	//return DLL_EXPORT void();
+	std::filesystem::path path{ pFilePath };
+
+	FileInfo result = { 0 };
+	result.fileSize = std::filesystem::file_size(path);
+	
+	//std::wstring filePath = pFilePath;
+	//CopyMemory(result.fileName, pFilePath, filePath.size() * sizeof(wchar_t));
+	result.fileName = SysAllocString(pFilePath);
+
+	return result;
 }

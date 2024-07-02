@@ -1,10 +1,7 @@
-﻿using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Buffers;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CsClient
 {
@@ -48,6 +45,15 @@ namespace CsClient
 
         [DllImport("CppDll.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, EntryPoint = "getInfo4")]
         private static extern void getInfo([MarshalAs(UnmanagedType.BStr)] ref string data);
+
+        [DllImport("CppDll.dll", CallingConvention = CallingConvention.StdCall)]
+        private static extern Point3d getPoint3d();
+
+        [DllImport("CppDll.dll", CallingConvention = CallingConvention.StdCall)]
+        private static extern void updatePoint3d(ref Point3d pt);
+
+        [DllImport("CppDll.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        private static extern CppFileInfo getFileInfo(string filename);
 
         public int Add(int a, int b)
         {
@@ -114,6 +120,22 @@ namespace CsClient
             getInfoWithArray(buffer, buffer.Length);
 
             return new string(buffer);
+        }
+
+        public Point3d GetPoint()
+        {
+            return getPoint3d();
+        }
+
+        public void UpdatePoint(ref Point3d pt)
+        {
+            updatePoint3d(ref pt);
+        }
+
+        public CppFileInfo GetAssemblyFileInfo()
+        {
+            var location = Assembly.GetExecutingAssembly().Location;
+            return getFileInfo(location);
         }
     }
 }
